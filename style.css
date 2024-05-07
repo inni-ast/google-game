@@ -1,0 +1,145 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  background: var(--background);
+  height: 100vh;
+  color: white;
+}
+:root {
+  --background: radial-gradient(
+    269.02% 186.27% at 96.21% 166.59%,
+    rgb(76, 161, 210) 0%,
+    rgb(40, 91, 174) 100%
+  );
+}
+#app {
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  padding: 5px 20px;
+  max-width: 1280px;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+h1 {
+  text-align: center;
+}
+/* settings" */
+.settings {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 2%;
+  justify-content: space-between;
+}
+.settings__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 20px;
+}
+.btn {
+  align-self: center;
+
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 100%;
+  color: #fff;
+  transition: all 3ms;
+  cursor: pointer;
+  border: 2px solid #75f94c;
+  border-radius: 10px 2px;
+  padding: 12px 36px;
+  width: 218px;
+  height: 48px;
+  box-shadow: 0 -4px 10px 2px rgba(88, 191, 57, 0.25),
+    0 4px 10px 2px rgba(88, 191, 57, 0.25);
+  background: #58bf39;
+}
+.btn:hover {
+  background: #fff;
+  color: #b0c255;
+  transition: all 3ms;
+}
+.btn__start {
+  margin-top: 15%;
+}
+option {
+  cursor: pointer;
+}
+.finish {
+  margin: 0 auto;
+  max-width: fit-content;
+  padding: 1%;
+  justify-content: center;
+  /* background-color: #fff; */
+}
+.finish__item {
+  background: white;
+  padding: 15px;
+  border-radius: 5px;
+  color: #3676bc;
+}
+.finish__title {
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 125%;
+  margin: 10px;
+}
+.finish__subtitle {
+  text-align: center;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 133%;
+}
+.finish__info {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 133%;
+}
+.finish__result {
+  font-weight: 500;
+  font-size: 24px;
+  text-align: right;
+}
+/* GAME */
+.game {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+select {
+  width: 237px;
+  max-width: 237px;
+  border: 1px solid #4fabff;
+  border-radius: 30px;
+  padding: 6px 12px;
+  background: var(--background);
+  color: #fff;
+  cursor: pointer;
+  appearance: none;
+  background: url(./assets/images/select.png) no-repeat right 15px center;
+}
+select:active,
+select:focus {
+  outline: none;
+}
+option {
+  background: #326fb8;
+  cursor: pointer;
+}
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  z-index: -2;
+  position: absolute;
+}

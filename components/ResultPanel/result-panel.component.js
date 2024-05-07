@@ -1,5 +1,8 @@
-export function ResultPanel(params) {
+import { getCathCount, getMissCount } from "../../data.js";
+
+export function ResultPanel() {
   const element = document.createElement("div");
-  element.append("Result Panel will be here");
+  element.append("CATCH" + getCathCount() + "    ");
+  element.append("MISS" + getMissCount());
   return element;
 }
