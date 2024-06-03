@@ -1,20 +1,26 @@
-import { playAgain, getCathCount, getMissCount } from "../../data.js";
+import { playAgain, getWinner } from "../../data.js";
 import { createEl } from "../../utils/createEl.js";
 
 export function Win() {
-  const catches = getCathCount();
-  const misses = getMissCount();
+  const winner = getWinner();
+
+  const winWrapperEl = document.createElement("div");
+  winWrapperEl.classList.add("wrapper");
 
   const winElement = document.createElement("div");
-  winElement.classList.add("finish__item");
+  winElement.classList.add("finish");
 
   const titleElement = createEl("h1", "You Win!", "finish__title");
-  const subTitleElement = createEl("h3", "Congratulations", "finish__subtitle");
+  const subTitleElement = createEl(
+    "h3",
+    `${winner.player}`,
+    "finish__subtitle"
+  );
   const catchElement = createEl("p", `Catch: `, "finish__info");
-  createEl("span", `${catches}`, "finish__result", catchElement);
+  createEl("span", `${winner.points}`, "finish__result", catchElement);
 
-  const missElement = createEl("p", `Miss: `, "finish__info");
-  createEl("span", `${misses}`, "finish__result", missElement);
+  const missElement = createEl("p", `Time: `, "finish__info");
+  createEl("span", `${winner.time}`, "finish__result", missElement);
 
   const playAgainBtn = document.createElement("button");
 
@@ -30,5 +36,6 @@ export function Win() {
     missElement,
     playAgainBtn
   );
-  return winElement;
+  winWrapperEl.append(winElement);
+  return winWrapperEl;
 }

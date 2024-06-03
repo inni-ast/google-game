@@ -1,8 +1,10 @@
-import { catchGoogle } from "../../../data.js";
-
 export function Google() {
   const element = document.createElement("span");
-  element.append("google");
-  element.addEventListener("click", catchGoogle);
+  const imgEl = document.createElement("img");
+
+  imgEl.classList.add("google-img");
+  imgEl.src = "./assets/images/google.svg";
+
+  element.append(imgEl);
   return element;
 }

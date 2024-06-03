@@ -1,38 +1,42 @@
 import { createEl } from "../../utils/createEl.js";
-import { playAgain, getCathCount, getMissCount } from "../../data.js";
+import { playAgain, getMissCount } from "../../data.js";
 
 export function Lose() {
-  const catches = getCathCount();
   const misses = getMissCount();
 
-  const winElement = document.createElement("div");
-  winElement.classList.add("finish__item");
+  const loseWrapperEl = document.createElement("div");
+  loseWrapperEl.classList.add("wrapper");
 
-  const titleElement = createEl("h1", "You Lose!", "finish__title");
+  const loseElement = document.createElement("div");
+  loseElement.classList.add("finish");
+
+  const titleElement = createEl("h1", "Google Win!", "finish__title");
   const subTitleElement = createEl(
     "h3",
     "You'll be lucky next times",
     "finish__subtitle"
   );
   const catchElement = createEl("p", `Catch: `, "finish__info");
-  createEl("span", `${catches}`, "finish__result", catchElement);
+  createEl("span", `${misses}`, "finish__result", catchElement);
 
-  const missElement = createEl("p", `Miss: `, "finish__info");
-  createEl("span", `${misses}`, "finish__result", missElement);
+  const missElement = createEl("p", `Time: `, "finish__info");
+  createEl("span", `2m 00s`, "finish__result", missElement);
 
   const playAgainBtn = document.createElement("button");
-  playAgainBtn.classList.add("btn");
+  playAgainBtn.classList.add("btn", "btn__play-again");
   playAgainBtn.append("Play again");
   playAgainBtn.addEventListener("click", () => {
     playAgain();
   });
 
-  winElement.append(
+  loseElement.append(
     titleElement,
     subTitleElement,
     catchElement,
     missElement,
     playAgainBtn
   );
-  return winElement;
+
+  loseWrapperEl.append(loseElement);
+  return loseWrapperEl;
 }
