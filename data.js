@@ -1,5 +1,13 @@
-//state machine
+// sounds
+const audioEl = new Audio();
 
+export function _addSound(sound) {
+  if (getIsSound()) {
+    audioEl.src = `./assets/sounds/${sound}.mp3`;
+    audioEl.play();
+  }
+}
+//state machine
 export const GAME_STATES = {
   SETTINGS: "settings",
   IN_PROGRESS: "in_progress",
@@ -17,6 +25,7 @@ export const MOVING_DIRECTIONS = {
   RIGHT: "right",
   LEFT: "left",
 };
+
 const _data = {
   gameState: GAME_STATES.SETTINGS,
   settings: {
@@ -27,7 +36,7 @@ const _data = {
     pointsToWin: 5,
     pointsToLose: 5,
     isSound: true,
-    googleJumpInterval: 4000,
+    googleJumpInterval: 3000,
   },
   catch: {
     player1: 0,
@@ -73,6 +82,7 @@ function _runGoogleJumpInt() {
         time: "2m 00s",
       };
       _data.gameState = GAME_STATES.LOSE;
+      _addSound("lose_sound");
     }
     observer();
   }, _data.settings.googleJumpInterval);
@@ -108,6 +118,7 @@ export function start() {
   _data.miss = 0;
   _data.catch = { player1: 0, player2: 0 };
   _data.gameState = GAME_STATES.IN_PROGRESS;
+
   _runGoogleJumpInt();
   observer();
 }
@@ -135,7 +146,6 @@ export function playAgain() {
 
 function _catchGoogle(playerNumber) {
   _stopGoogleJumpInt();
-
   _data.catch[`player${playerNumber}`]++;
 
   if (_data.catch[`player${playerNumber}`] === _data.settings.pointsToWin) {
@@ -144,8 +154,11 @@ function _catchGoogle(playerNumber) {
       points: _data.catch[`player${playerNumber}`],
       time: "2m 00s",
     };
+
     _data.gameState = GAME_STATES.WIN;
+    _addSound("win_sound");
   } else {
+    _addSound("move_sound");
     _changeGoogleCoords();
     _runGoogleJumpInt();
   }
@@ -210,9 +223,12 @@ export function movePlayer(playerNum, direction) {
 
   if (isMatchWithGoogle) {
     _catchGoogle(playerNum);
+  } else {
+    _addSound("move_sound");
   }
 
   _data.heroes[`player${playerNum}`] = newCoords;
+
   observer();
 }
 function _checkIsCoordsInValidRange(coords) {

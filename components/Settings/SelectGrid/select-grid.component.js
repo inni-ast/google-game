@@ -2,6 +2,8 @@ import {
   getGridSizeSettings,
   setGridSize,
   GAME_SETTINGS,
+  getGameState,
+  GAME_STATES,
 } from "../../../data.js";
 
 export function SelectGrid() {
@@ -28,7 +30,9 @@ export function SelectGrid() {
   selectEl.addEventListener("change", () => {
     setGridSize(+selectEl.value, +selectEl.value);
   });
-
+  if (getGameState() !== GAME_STATES.SETTINGS) {
+    selectEl.disabled = true;
+  }
   containerEl.append(selectEl);
   return containerEl;
 }

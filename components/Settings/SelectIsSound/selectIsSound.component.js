@@ -30,6 +30,7 @@ export function selectIsSound() {
 
   const imgSoundEl = document.createElement("img");
   imgSoundEl.classList.add("sound-img");
+
   imgSoundEl.addEventListener("click", () => {
     isSound ? setIsSound(false) : setIsSound(true);
   });

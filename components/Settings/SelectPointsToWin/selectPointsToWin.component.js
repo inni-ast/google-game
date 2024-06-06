@@ -1,5 +1,7 @@
 import {
   GAME_SETTINGS,
+  GAME_STATES,
+  getGameState,
   getPointsToWin,
   setPointsToWin,
 } from "../../../data.js";
@@ -28,6 +30,9 @@ export function SelectPointsToWin() {
     selectEl.addEventListener("change", () => {
       setPointsToWin(+selectEl.value);
     });
+    if (getGameState() !== GAME_STATES.SETTINGS) {
+      selectEl.disabled = true;
+    }
   }
   containerEl.append(selectEl);
   return containerEl;

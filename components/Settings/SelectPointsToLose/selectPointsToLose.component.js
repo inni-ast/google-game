@@ -1,5 +1,7 @@
 import {
   GAME_SETTINGS,
+  GAME_STATES,
+  getGameState,
   getPointsToLose,
   setPointsToLose,
 } from "../../../data.js";
@@ -27,7 +29,9 @@ export function SelectPointsToLose() {
   selectEl.addEventListener("change", () => {
     setPointsToLose(+selectEl.value);
   });
-
+  if (getGameState() !== GAME_STATES.SETTINGS) {
+    selectEl.disabled = true;
+  }
   containerEl.append(selectEl);
   return containerEl;
 }
