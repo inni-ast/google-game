@@ -14,11 +14,7 @@ export const GAME_STATES = {
   WIN: "win",
   LOSE: "lose",
 };
-export const GAME_SETTINGS = {
-  pointsToLose: [5, 10, 15, 20, 25],
-  pointsToWin: [5, 20, 50, 60, 80],
-  gridSize: [4, 5, 6, 7, 8],
-};
+
 export const MOVING_DIRECTIONS = {
   UP: "up",
   DOWN: "down",
@@ -35,6 +31,7 @@ const _data = {
     },
     pointsToWin: 5,
     pointsToLose: 5,
+    player2ControlMode: "keyboard",
     isSound: true,
     googleJumpInterval: 3000,
   },
@@ -94,11 +91,11 @@ function _stopGoogleJumpInt(params) {
 export function addEventListener(subscriber) {
   observer = subscriber;
 }
-export function setGridSize(x, y) {
+export function setGridSize(x) {
   if (x < 1) throw new Error("Incorrect X grid size");
-  if (y < 1) throw new Error("Incorrect Y grid size");
+
   _data.settings.gridSize.x = x;
-  _data.settings.gridSize.y = y;
+  _data.settings.gridSize.y = x;
 }
 export function setPointsToWin(points) {
   _data.settings.pointsToWin = points;
@@ -108,6 +105,10 @@ export function setPointsToLose(points) {
 }
 export function setIsSound(isSound) {
   _data.settings.isSound = isSound;
+  observer();
+}
+export function setPlayer2ControlMode(mode) {
+  _data.settings.player2ControlMode = mode;
   observer();
 }
 
@@ -283,6 +284,9 @@ export function getWinner() {
 }
 export function getIsSound() {
   return _data.settings.isSound;
+}
+export function getPlayer2ControlMode() {
+  return _data.settings.player2ControlMode;
 }
 export function validatePlayerNumberOrThrow(playerNum) {
   if (![1, 2].some((el) => el === playerNum)) {
