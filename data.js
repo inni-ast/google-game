@@ -32,7 +32,7 @@ const _data = {
     pointsToWin: 5,
     pointsToLose: 5,
     player2ControlMode: "keyboard",
-    isSound: true,
+    isSound: false,
     googleJumpInterval: 3000,
   },
   catch: {
@@ -62,6 +62,7 @@ const _data = {
   },
 };
 let observer = () => {};
+let observerPlayer2Move = () => {};
 let jumpIntervalId;
 
 function getRandomInt(max) {
@@ -87,10 +88,15 @@ function _runGoogleJumpInt() {
 function _stopGoogleJumpInt(params) {
   clearInterval(jumpIntervalId);
 }
-//setter/mutation/command
+// listeners
 export function addEventListener(subscriber) {
   observer = subscriber;
 }
+export function addEventListenerForPlayer2(subscriber) {
+  observerPlayer2Move = subscriber;
+}
+
+//setter/mutation/command
 export function setGridSize(x) {
   if (x < 1) throw new Error("Incorrect X grid size");
 
@@ -119,6 +125,8 @@ export function start() {
   _data.miss = 0;
   _data.catch = { player1: 0, player2: 0 };
   _data.gameState = GAME_STATES.IN_PROGRESS;
+
+  observerPlayer2Move();
 
   _runGoogleJumpInt();
   observer();
@@ -191,7 +199,6 @@ function _changeGoogleCoords() {
  * @returns кол-во баллов, заработанных пользователем
  */
 
-//TO DO
 export function movePlayer(playerNum, direction) {
   if (_data.gameState !== GAME_STATES.IN_PROGRESS) {
     return;

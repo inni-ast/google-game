@@ -1,5 +1,6 @@
 import { Game } from "./components/Game/game.component.js";
 import { addEventListener } from "./data.js";
+import "./eventListeners.js";
 
 export function rerender() {
   const rootElement = document.getElementById("root");
