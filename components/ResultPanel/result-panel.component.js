@@ -1,9 +1,17 @@
-import { getCathCount, getMissCount } from "../../data.js";
+import { subscribe, getCathCount, getMissCount, EVENTS } from "../../data.js";
 import { Google } from "../GameGrid/Cell/Google/google.component.js";
 import { Player } from "../GameGrid/Cell/Player/player.component.js";
 import { createEl } from "./../../utils/createEl.js";
 
 export function ResultPanel() {
+  subscribe((e) => {
+    if (e.name === EVENTS.SCORES_CHANGED) {
+      console.log("changed result");
+      countMisses.innerHTML = "";
+      countMisses.append(+getMissCount());
+    }
+  });
+
   const element = document.createElement("div");
   element.classList.add("results");
 
@@ -37,7 +45,12 @@ export function ResultPanel() {
   const googleEl = Google();
   missEl.append(googleEl);
 
-  createEl("span", `   ${+getMissCount()}`, "results_info", missEl);
+  const countMisses = createEl(
+    "span",
+    `   ${+getMissCount()}`,
+    "results_info",
+    missEl
+  );
 
   const timeEl = createEl("div", "", "results__time", element);
   createEl("span", "Time: ", "results__title", timeEl);

@@ -4,14 +4,13 @@ import "./eventListeners.js";
 
 export function rerender(e) {
   if (e.name === EVENTS.STATUS_CHANGED) {
-    console.log(e);
-  }
-  console.log(e.name);
-  const rootElement = document.getElementById("root");
-  rootElement.innerHTML = "";
+    const rootElement = document.getElementById("root");
+    rootElement.innerHTML = "";
 
-  const game = Game();
-  rootElement.append(game);
+    const game = Game();
+    rootElement.append(game);
+  }
+  // console.log(e.name);
 }
 //rerender - это функция подписчик / наблюдатель/обсервер
 // а тот на кого мы подписались - субъект/наблюдаемый/subject/observable
