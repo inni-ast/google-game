@@ -20,55 +20,50 @@ export function Cell(x, y) {
     prevStatus: CELL_STATUS.EMPTY,
   };
   subscribe((e) => {
-    switch (e.name) {
-      case EVENTS.GOOGLE_JUMPED:
-        switch (state.prevStatus) {
-          case CELL_STATUS.GOOGLE:
-            //cell.innerHTML = "";
+    const transitions = {
+      [EVENTS.GOOGLE_JUMPED]: {
+        [CELL_STATUS.GOOGLE]: () => {
+          render();
+        },
+        [CELL_STATUS.EMPTY]: () => {
+          if (x === getGoogleCoords().x && y === getGoogleCoords().y) {
             render();
-            break;
-          case CELL_STATUS.EMPTY:
-            if (x === getGoogleCoords().x && y === getGoogleCoords().y) {
-              render();
-            }
-            break;
-          case CELL_STATUS.PLAYER1:
-          case CELL_STATUS.PLAYER2:
-            break;
-        }
-        break;
-      case EVENTS.PLAYER1_MOVED:
-        switch (state.prevStatus) {
-          case CELL_STATUS.PLAYER1:
-            //cell.innerHTML = "";
+          }
+        },
+      },
+      [EVENTS.PLAYER1_MOVED]: {
+        [CELL_STATUS.PLAYER1]: () => {
+          render();
+        },
+        [CELL_STATUS.GOOGLE]: () => {
+          if (x === getPlayer1Coords().x && y === getPlayer1Coords().y) {
             render();
-            break;
-          case CELL_STATUS.GOOGLE:
-          case CELL_STATUS.EMPTY:
-            if (x === getPlayer1Coords().x && y === getPlayer1Coords().y) {
-              render();
-            }
-            break;
-          case CELL_STATUS.PLAYER2:
-            break;
-        }
+          }
+        },
+        [CELL_STATUS.EMPTY]: () => {
+          if (x === getPlayer1Coords().x && y === getPlayer1Coords().y) {
+            render();
+          }
+        },
+      },
 
-      case EVENTS.PLAYER2_MOVED:
-        switch (state.prevStatus) {
-          case CELL_STATUS.PLAYER2:
-            //cell.innerHTML = "";
+      [EVENTS.PLAYER2_MOVED]: {
+        [CELL_STATUS.PLAYER2]: () => {
+          render();
+        },
+        [CELL_STATUS.GOOGLE]: () => {
+          if (x === getPlayer2Coords().x && y === getPlayer2Coords().y) {
             render();
-            break;
-          case CELL_STATUS.GOOGLE:
-          case CELL_STATUS.EMPTY:
-            if (x === getPlayer2Coords().x && y === getPlayer2Coords().y) {
-              render();
-            }
-            break;
-          case CELL_STATUS.PLAYER1:
-            break;
-        }
-    }
+          }
+        },
+        [CELL_STATUS.EMPTY]: () => {
+          if (x === getPlayer2Coords().x && y === getPlayer2Coords().y) {
+            render();
+          }
+        },
+      },
+    };
+    transitions[e.name]?.[state.prevStatus]?.();
   });
 
   function render() {

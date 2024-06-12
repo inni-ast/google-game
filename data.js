@@ -267,7 +267,7 @@ export function movePlayer(playerNum, direction) {
 
   _data.heroes[`player${playerNum}`] = newCoords;
 
-  _notify(`EVENTS.PLAYER${playerNum}_MOVED`);
+  _notify(`PLAYER${playerNum}_MOVED`);
 }
 function _checkIsCoordsInValidRange(coords) {
   const xIsCorrect = coords.x >= 0 && coords.x < _data.settings.gridSize.x;
