@@ -8,6 +8,14 @@ export function _addSound(sound) {
   }
 }
 //state machine
+export const EVENTS = {
+  GOOGLE_JUMPED: "GOOGLE_JUMPED",
+  PLAYER1_MOVED: "PLAYER1_MOVED",
+  PLAYER2_MOVED: "PLAYER2_MOVED",
+  SCORES_CHANGED: "SCORES_CHANGED",
+  STATUS_CHANGED: "STATUS_CHANGED",
+  SETTINGS_CHANGED: "SETTINGS_CHANGED",
+};
 export const GAME_STATES = {
   SETTINGS: "settings",
   IN_PROGRESS: "in_progress",
@@ -61,8 +69,32 @@ const _data = {
     },
   },
 };
-let observer = () => {};
+
+//subscribers/подписчики /observers/eventHandler/ слушатель
+
+let _subscribers = [];
+
+// listeners
+
+export function subscribe(subscriber) {
+  _subscribers.push(subscriber);
+}
+function _notify(event) {
+  _subscribers.forEach((f) => {
+    try {
+      f({ name: event });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+}
+//for voice control
 let observerPlayer2Move = () => {};
+export function addEventListenerForPlayer2(subscriber) {
+  observerPlayer2Move = subscriber;
+}
+
+//utils
 let jumpIntervalId;
 
 function getRandomInt(max) {
@@ -71,7 +103,9 @@ function getRandomInt(max) {
 function _runGoogleJumpInt() {
   jumpIntervalId = setInterval(() => {
     _changeGoogleCoords();
+    _notify(EVENTS.GOOGLE_JUMPED);
     _data.miss++;
+    _notify(EVENTS.SCORES_CHANGED);
     if (_data.miss === _data.settings.pointsToLose) {
       _stopGoogleJumpInt();
       _data.winner = {
@@ -80,20 +114,13 @@ function _runGoogleJumpInt() {
         time: "2m 00s",
       };
       _data.gameState = GAME_STATES.LOSE;
+      _notify(EVENTS.STATUS_CHANGED);
       _addSound("lose_sound");
     }
-    observer();
   }, _data.settings.googleJumpInterval);
 }
 function _stopGoogleJumpInt(params) {
   clearInterval(jumpIntervalId);
-}
-// listeners
-export function addEventListener(subscriber) {
-  observer = subscriber;
-}
-export function addEventListenerForPlayer2(subscriber) {
-  observerPlayer2Move = subscriber;
 }
 
 //setter/mutation/command
@@ -111,11 +138,13 @@ export function setPointsToLose(points) {
 }
 export function setIsSound(isSound) {
   _data.settings.isSound = isSound;
-  observer();
+  //observer();
+  _notify();
 }
 export function setPlayer2ControlMode(mode) {
   _data.settings.player2ControlMode = mode;
-  observer();
+  //observer();
+  _notify();
 }
 
 export function start() {
@@ -127,13 +156,13 @@ export function start() {
   _data.gameState = GAME_STATES.IN_PROGRESS;
 
   observerPlayer2Move();
-
+  _notify(EVENTS.STATUS_CHANGED);
   _runGoogleJumpInt();
-  observer();
 }
 export function playAgain() {
   _data.miss = 0;
   _data.catch = { player1: 0, player2: 0 };
+  _notify(EVENTS.SCORES_CHANGED);
   _data.gameState = GAME_STATES.SETTINGS;
   _data.winner = null;
   (_data.heroes = {
@@ -150,13 +179,13 @@ export function playAgain() {
       y: 3,
     },
   }),
-    observer();
+    _notify(EVENTS.STATUS_CHANGED);
 }
 
 function _catchGoogle(playerNumber) {
   _stopGoogleJumpInt();
   _data.catch[`player${playerNumber}`]++;
-
+  _notify(EVENTS.SCORES_CHANGED);
   if (_data.catch[`player${playerNumber}`] === _data.settings.pointsToWin) {
     _data.winner = {
       player: `Player${playerNumber}`,
@@ -165,14 +194,14 @@ function _catchGoogle(playerNumber) {
     };
 
     _data.gameState = GAME_STATES.WIN;
+    _notify(EVENTS.STATUS_CHANGED);
     _addSound("win_sound");
   } else {
     _addSound("move_sound");
     _changeGoogleCoords();
+    _notify(EVENTS.GOOGLE_JUMPED);
     _runGoogleJumpInt();
   }
-
-  observer();
 }
 function _changeGoogleCoords() {
   let newX;
@@ -190,7 +219,8 @@ function _changeGoogleCoords() {
   _data.heroes.google.x = newX;
   _data.heroes.google.y = newY;
 
-  observer();
+  //observer();
+  _notify();
 }
 
 //getter/selector/query/adapter
@@ -237,7 +267,7 @@ export function movePlayer(playerNum, direction) {
 
   _data.heroes[`player${playerNum}`] = newCoords;
 
-  observer();
+  _notify(`EVENTS.PLAYER${playerNum}_MOVED`);
 }
 function _checkIsCoordsInValidRange(coords) {
   const xIsCorrect = coords.x >= 0 && coords.x < _data.settings.gridSize.x;

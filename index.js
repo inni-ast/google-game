@@ -1,8 +1,12 @@
 import { Game } from "./components/Game/game.component.js";
-import { addEventListener } from "./data.js";
+import { subscribe, EVENTS } from "./data.js";
 import "./eventListeners.js";
 
-export function rerender() {
+export function rerender(e) {
+  if (e.name === EVENTS.STATUS_CHANGED) {
+    console.log(e);
+  }
+  console.log(e.name);
   const rootElement = document.getElementById("root");
   rootElement.innerHTML = "";
 
@@ -12,6 +16,6 @@ export function rerender() {
 //rerender - это функция подписчик / наблюдатель/обсервер
 // а тот на кого мы подписались - субъект/наблюдаемый/subject/observable
 // это весь модуль data.js
-rerender();
+rerender({ name: EVENTS.STATUS_CHANGED });
 
-addEventListener(rerender);
+subscribe(rerender);
