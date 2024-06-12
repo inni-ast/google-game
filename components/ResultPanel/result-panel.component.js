@@ -1,6 +1,6 @@
 import { getCathCount, getMissCount } from "../../data.js";
-import { Google } from "../GameGrid/Google/google.component.js";
-import { Player } from "../GameGrid/Player/player.component.js";
+import { Google } from "../GameGrid/Cell/Google/google.component.js";
+import { Player } from "../GameGrid/Cell/Player/player.component.js";
 import { createEl } from "./../../utils/createEl.js";
 
 export function ResultPanel() {

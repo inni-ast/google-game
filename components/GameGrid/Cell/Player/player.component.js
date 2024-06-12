@@ -1,4 +1,4 @@
-import { validatePlayerNumberOrThrow } from "../../../data.js";
+import { validatePlayerNumberOrThrow } from "../../../../data.js";
 
 export function Player(playerNum) {
   validatePlayerNumberOrThrow(playerNum);
