@@ -8,11 +8,11 @@ export function ResultPanel() {
     if (e.name === EVENTS.SCORES_CHANGED) {
       console.log("changed result");
       countMisses.innerHTML = "";
-      catchesCount1.innerHTML = "";
-      catchesCount2.innerHTML = "";
+      catchPlayer1.innerHTML = "";
+      catchPlayer2.innerHTML = "";
       countMisses.append(+getMissCount());
-      catchesCount1.append(getCathCount().player1);
-      catchesCount2.append(getCathCount().player2);
+      catchPlayer1.append(getCathCount().player1);
+      catchPlayer2.append(getCathCount().player2);
     }
   });
 
@@ -20,13 +20,10 @@ export function ResultPanel() {
   element.classList.add("results");
 
   const catchPlayer1El = createEl("div", "", "results__catch", element);
-
   createEl("div", "Player 1 ", "results__title", catchPlayer1El);
-
   const player1ImgEl = Player(1);
   catchPlayer1El.append(player1ImgEl);
-
-  const catchesCount1 = createEl(
+  const catchPlayer1 = createEl(
     "span",
     `   ${getCathCount().player1}`,
     "results_info",
@@ -37,7 +34,7 @@ export function ResultPanel() {
   createEl("div", "Player 2 ", "results__title", catchPlayer2El);
   const player2ImgEl = Player(2);
   catchPlayer2El.append(player2ImgEl);
-  const catchesCount2 = createEl(
+  const catchPlayer2 = createEl(
     "span",
     `   ${getCathCount().player2}`,
     "results_info",

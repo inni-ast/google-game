@@ -1,10 +1,4 @@
-import {
-  GAME_STATES,
-  MOVING_DIRECTIONS,
-  getGameState,
-  movePlayer,
-  getPlayer2ControlMode,
-} from "../../data.js";
+import { GAME_STATES, getGameState } from "../../data.js";
 
 import { createEl } from "../../utils/createEl.js";
 import { GameGrid } from "../GameGrid/game-grid.component.js";

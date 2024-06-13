@@ -67,7 +67,7 @@ export function Cell(x, y) {
   });
 
   function render() {
-    console.log(x, y);
+    //  console.log(x, y);
 
     cell.innerHTML = "";
     if (x === getGoogleCoords().x && y === getGoogleCoords().y) {

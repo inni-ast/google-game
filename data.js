@@ -1,13 +1,18 @@
 // sounds
-const audioEl = new Audio();
-
-export function _addSound(sound) {
+const SOUNDS = {
+  MOVE: "move_sound",
+  WIN: "win_sound",
+  LOSE: "lose_sound",
+};
+function _setSound(sound) {
   if (getIsSound()) {
-    audioEl.src = `./assets/sounds/${sound}.mp3`;
-    audioEl.play();
+    _data.sound.audioEl.preload = "auto";
+    _data.sound.audioEl.src = `./assets/sounds/${sound}.mp3`;
+    _data.sound.audioEl.play();
   }
 }
 //state machine
+
 export const EVENTS = {
   GOOGLE_JUMPED: "GOOGLE_JUMPED",
   PLAYER1_MOVED: "PLAYER1_MOVED",
@@ -40,8 +45,11 @@ const _data = {
     pointsToWin: 5,
     pointsToLose: 5,
     player2ControlMode: "keyboard",
-    isSound: false,
+    isSound: true,
     googleJumpInterval: 3000,
+  },
+  sound: {
+    audioEl: new Audio(),
   },
   catch: {
     player1: 0,
@@ -115,7 +123,7 @@ function _runGoogleJumpInt() {
       };
       _data.gameState = GAME_STATES.LOSE;
       _notify(EVENTS.STATUS_CHANGED);
-      _addSound("lose_sound");
+      _setSound(SOUNDS.LOSE);
     }
   }, _data.settings.googleJumpInterval);
 }
@@ -138,12 +146,10 @@ export function setPointsToLose(points) {
 }
 export function setIsSound(isSound) {
   _data.settings.isSound = isSound;
-  //observer();
   _notify();
 }
 export function setPlayer2ControlMode(mode) {
   _data.settings.player2ControlMode = mode;
-  //observer();
   _notify();
 }
 
@@ -195,9 +201,9 @@ function _catchGoogle(playerNumber) {
 
     _data.gameState = GAME_STATES.WIN;
     _notify(EVENTS.STATUS_CHANGED);
-    _addSound("win_sound");
+    _setSound(SOUNDS.WIN);
   } else {
-    _addSound("move_sound");
+    _setSound(SOUNDS.MOVE);
     _changeGoogleCoords();
     _notify(EVENTS.GOOGLE_JUMPED);
     _runGoogleJumpInt();
@@ -219,7 +225,6 @@ function _changeGoogleCoords() {
   _data.heroes.google.x = newX;
   _data.heroes.google.y = newY;
 
-  //observer();
   _notify();
 }
 
@@ -262,7 +267,7 @@ export function movePlayer(playerNum, direction) {
   if (isMatchWithGoogle) {
     _catchGoogle(playerNum);
   } else {
-    _addSound("move_sound");
+    _setSound(SOUNDS.MOVE);
   }
 
   _data.heroes[`player${playerNum}`] = newCoords;
